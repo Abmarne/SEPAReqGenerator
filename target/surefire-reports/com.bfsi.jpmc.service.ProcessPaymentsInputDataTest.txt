@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.bfsi.jpmc.service.ProcessPaymentsInputDataTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.730 s -- in com.bfsi.jpmc.service.ProcessPaymentsInputDataTest

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEPA Request Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tab {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+        
+        .dropdown-display {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .dropdown-display:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border: 2px solid #667eea;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 20;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .dropdown-menu.active {
+            display: block;
+        }
+        
+        .dropdown-search {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            box-sizing: border-box;
+        }
+        
+        .dropdown-search input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        
+        .dropdown-search input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .dropdown-items {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .dropdown-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .dropdown-item:hover {
+            background: #f0f0f0;
+        }
+        
+        .dropdown-item.no-files {
+            color: #999;
+            cursor: default;
+        }
+        
+        .dropdown-item.no-files:hover {
+            background: white;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #555;
+            margin-left: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-small {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+        
+        .output-section {
+            display: none;
+        }
+        
+        .output-section.active {
+            display: block;
+        }
+        
+        .file-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .file-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .file-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* XML Viewer Styles */
+        .xml-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            flex-direction: column;
+        }
+        
+        .xml-viewer.active {
+            display: flex;
+        }
+        
+        .xml-viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            border-bottom: 2px solid #764ba2;
+        }
+        
+        .xml-viewer-content {
+            flex: 1;
+            background: #ffffff;
+            color: #333;
+            padding: 30px;
+            overflow: auto;
+            font-family: 'Courier New', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .xml-viewer-content pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            font-family: 'Courier New', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SEPA Request Generator</h1>
+            <p>Convert payment files to SEPA XML format</p>
+        </div>
+        
+        <div class="card">
+            <h2 class="card-title">Process Payment File</h2>
+            
+            <div class="filter-tabs" id="sourceTabs">
+                <div class="filter-tab active" id="serverTab" onclick="setSource('server')">Server Files</div>
+                <div class="filter-tab" id="localTab" onclick="setSource('local')">Upload Local File</div>
+            </div>
+
+            <div id="serverSource">
+                <div class="filter-tabs">
+                    <div class="filter-tab active type-filter" onclick="filterFiles('all')">All</div>
+                    <div class="filter-tab type-filter" onclick="filterFiles('excel')">Excel</div>
+                    <div class="filter-tab type-filter" onclick="filterFiles('csv')">CSV</div>
+                    <div class="filter-tab type-filter" onclick="filterFiles('txt')">TXT</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Select File from Server</label>
+                    <div class="custom-dropdown">
+                        <div class="dropdown-display" id="dropdownDisplay" onclick="toggleFileDropdown()">-- Select a file from input folder --</div>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <div class="dropdown-search">
+                                <input type="text" id="dropdownSearchInput" placeholder="Search files..." onkeyup="filterFilesList()">
+                            </div>
+                            <div class="dropdown-items" id="dropdownItems"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="localSource" style="display: none;">
+                <div class="form-group">
+                    <label>Upload File from Desktop</label>
+                    <div style="border: 2px dashed #667eea; padding: 20px; border-radius: 8px; text-align: center; cursor: pointer;" onclick="document.getElementById('fileInput').click()">
+                        <p id="fileNameDisplay">Click to browse or drag & drop</p>
+                        <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">Support for .xlsx, .csv, .txt</p>
+                        <input type="file" id="fileInput" style="display: none;" onchange="handleFileSelect(event)">
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" id="processBtn">Process & Generate SEPA</button>
+            <button class="btn btn-secondary" onclick="refreshFiles()">Refresh</button>
+            
+            <div id="status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing file...</p>
+        </div>
+        
+        <div class="card output-section" id="outputSection">
+            <h2 class="card-title">Generated Output Files</h2>
+            <ul class="file-list" id="outputFiles"></ul>
+        </div>
+    </div>
+    
+    <!-- XML Viewer Modal -->
+    <div class="xml-viewer" id="xmlViewer">
+        <div class="xml-viewer-header">
+            <h3 id="xmlViewerTitle">XML Viewer</h3>
+            <div>
+                <button class="btn btn-secondary btn-small" onclick="toggleFullscreen()">Fullscreen</button>
+                <button class="btn btn-secondary btn-small" onclick="closeXmlViewer()">Close</button>
+            </div>
+        </div>
+        <div class="xml-viewer-content" id="xmlViewerContent"></div>
+    </div>
+
+    <script>
+        let allFiles = [];
+        let currentFilter = 'all';
+        let currentSource = 'server'; // 'server' or 'local'
+        let selectedLocalFile = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFiles();
+            document.getElementById('processBtn').addEventListener('click', processRequest);
+        });
+
+        function setSource(source) {
+            currentSource = source;
+            document.getElementById('serverTab').classList.toggle('active', source === 'server');
+            document.getElementById('localTab').classList.toggle('active', source === 'local');
+            document.getElementById('serverSource').style.display = source === 'server' ? 'block' : 'none';
+            document.getElementById('localSource').style.display = source === 'local' ? 'block' : 'none';
+            document.getElementById('status').style.display = 'none';
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                selectedLocalFile = file;
+                document.getElementById('fileNameDisplay').textContent = "Selected: " + file.name;
+                document.getElementById('fileNameDisplay').style.color = "#667eea";
+                document.getElementById('fileNameDisplay').style.fontWeight = "bold";
+            }
+        }
+        
+        function filterFiles(type) {
+            currentFilter = type;
+            document.querySelectorAll('.type-filter').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            filterFilesList();
+        }
+        
+        let selectedFile = '';
+        
+        function toggleFileDropdown() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('active');
+            if (menu.classList.contains('active')) {
+                document.getElementById('dropdownSearchInput').focus();
+                filterFilesList();
+            }
+        }
+        
+        function filterFilesList() {
+            const searchTerm = document.getElementById('dropdownSearchInput').value.toLowerCase();
+            const itemsContainer = document.getElementById('dropdownItems');
+            itemsContainer.innerHTML = '';
+            
+            let filtered = allFiles.filter(file => {
+                const fileLower = file.toLowerCase();
+                const matchesSearch = fileLower.includes(searchTerm);
+                const matchesFilter = currentFilter === 'all' || 
+                    (currentFilter === 'excel' && (fileLower.endsWith('.xlsx') || fileLower.endsWith('.xls'))) ||
+                    (currentFilter === 'csv' && fileLower.endsWith('.csv')) ||
+                    (currentFilter === 'txt' && fileLower.endsWith('.txt'));
+                return matchesSearch && matchesFilter;
+            });
+            
+            if (filtered.length === 0) {
+                const item = document.createElement('div');
+                item.className = 'dropdown-item no-files';
+                item.textContent = 'No files found';
+                itemsContainer.appendChild(item);
+            } else {
+                filtered.forEach(file => {
+                    const item = document.createElement('div');
+                    item.className = 'dropdown-item';
+                    item.textContent = file;
+                    item.onclick = function() {
+                        selectFileItem(file);
+                    };
+                    itemsContainer.appendChild(item);
+                });
+            }
+        }
+        
+        function selectFileItem(file) {
+            selectedFile = file;
+            document.getElementById('dropdownDisplay').textContent = file;
+            document.getElementById('dropdownMenu').classList.remove('active');
+            document.getElementById('dropdownSearchInput').value = '';
+        }
+        
+        function refreshFiles() {
+            loadFiles();
+        }
+        
+        function loadFiles() {
+            fetch('/api/sepa/input-files')
+                .then(response => response.json())
+                .then(data => {
+                    allFiles = data.files || [];
+                })
+                .catch(error => {
+                    showStatus('Error loading files: ' + error.message, 'error');
+                });
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.custom-dropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                if(document.getElementById('dropdownMenu')) {
+                    document.getElementById('dropdownMenu').classList.remove('active');
+                }
+            }
+        });
+        
+        function processRequest() {
+            if (currentSource === 'server') {
+                processServerFile();
+            } else {
+                processLocalFile();
+            }
+        }
+
+        function processServerFile() {
+            const filename = selectedFile;
+            if (!filename) {
+                showStatus('Please select a file from server', 'error');
+                return;
+            }
+            
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('outputSection').classList.remove('active');
+            
+            const formData = new FormData();
+            formData.append('filename', filename);
+            
+            fetch('/api/sepa/process', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(handleProcessResponse)
+            .catch(handleProcessError);
+        }
+
+        function processLocalFile() {
+            if (!selectedLocalFile) {
+                showStatus('Please select a local file from your desktop', 'error');
+                return;
+            }
+            
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('outputSection').classList.remove('active');
+            
+            const formData = new FormData();
+            formData.append('file', selectedLocalFile);
+            
+            fetch('/api/sepa/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(handleProcessResponse)
+            .catch(handleProcessError);
+        }
+
+        function handleProcessResponse(data) {
+            document.getElementById('loading').classList.remove('active');
+            if (data.success) {
+                showStatus(data.message, 'success');
+                displayOutputFiles(data.generatedFiles);
+                if (currentSource === 'local') {
+                    // Refresh server list because uploaded file is now on server
+                    loadFiles();
+                }
+            } else {
+                showStatus(data.message, 'error');
+            }
+        }
+
+        function handleProcessError(error) {
+            document.getElementById('loading').classList.remove('active');
+            showStatus('Error processing: ' + error.message, 'error');
+        }
+        
+        function displayOutputFiles(files) {
+            const outputSection = document.getElementById('outputSection');
+            const outputFiles = document.getElementById('outputFiles');
+            
+            outputFiles.innerHTML = '';
+            
+            if (files && files.length > 0) {
+                files.forEach(file => {
+                    const li = document.createElement('li');
+                    li.className = 'file-item';
+                    li.innerHTML = `
+                        <span class="file-name">${file}</span>
+                        <div class="file-actions">
+                            <button class="btn btn-primary btn-small" onclick="viewFile('${file}')">View</button>
+                            <a href="/api/sepa/download/${encodeURIComponent(file)}" class="btn btn-secondary btn-small" style="text-decoration: none;">Download</a>
+                        </div>
+                    `;
+                    outputFiles.appendChild(li);
+                });
+                outputSection.classList.add('active');
+            } else {
+                outputFiles.innerHTML = '<li class="file-item"><span class="file-name">No output files generated</span></li>';
+                outputSection.classList.add('active');
+            }
+        }
+        
+        function viewFile(filename) {
+            fetch('/api/sepa/download/' + encodeURIComponent(filename))
+                .then(response => response.text())
+                .then(content => {
+                    document.getElementById('xmlViewerTitle').textContent = filename;
+                    const viewerContent = document.getElementById('xmlViewerContent');
+                    
+                    // Format XML with proper indentation for better visibility
+                    let formattedContent = content;
+                    if (filename.toLowerCase().endsWith('.xml')) {
+                        formattedContent = formatXmlContent(content);
+                    }
+                    
+                    viewerContent.innerHTML = '<pre>' + escapeHtml(formattedContent) + '</pre>';
+                    document.getElementById('xmlViewer').classList.add('active');
+                })
+                .catch(error => {
+                    showStatus('Error viewing file: ' + error.message, 'error');
+                });
+        }
+        
+        function formatXmlContent(xml) {
+            let formatted = '';
+            let indent = 0;
+            let lines = xml.split(/>\s*</);
+            
+            lines.forEach((line, index) => {
+                let node = line;
+                if (index > 0) node = '<' + node;
+                if (index < lines.length - 1) node = node + '>';
+                
+                // Check if it's a closing tag
+                if (node.match(/^<\//)) {
+                    indent = Math.max(0, indent - 1);
+                }
+                
+                formatted += '  '.repeat(indent) + node + '\n';
+                
+                // Check if it's an opening tag (not self-closing)
+                if (node.match(/^<[^/!?][^>]*[^/]>$/)) {
+                    indent++;
+                }
+            });
+            
+            return formatted;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function closeXmlViewer() {
+            document.getElementById('xmlViewer').classList.remove('active');
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        }
+        
+        function toggleFullscreen() {
+            const viewer = document.getElementById('xmlViewer');
+            if (!document.fullscreenElement) {
+                viewer.requestFullscreen().catch(err => {
+                    showStatus('Error entering fullscreen: ' + err.message, 'error');
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
