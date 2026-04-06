@@ -5,6 +5,7 @@ com\bfsi\jpmc\model\ColumnNumMapper$SepaField.class
 com\bfsi\jpmc\service\ProcessPaymentsInputData.class
 com\bfsi\jpmc\model\ColumnNumMapper.class
 com\bfsi\jpmc\service\CreateErrorRecord.class
+com\bfsi\jpmc\service\ProcessingLogService.class
 com\bfsi\jpmc\model\ColumnNumMapper$Format.class
 com\bfsi\jpmc\service\SepaFileService.class
 com\bfsi\jpmc\util\AppConstants.class

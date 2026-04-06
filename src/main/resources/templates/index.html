@@ -103,6 +103,14 @@
         .output-section.active {
             display: block;
         }
+
+        .logs-section {
+            display: none;
+        }
+
+        .logs-section.active {
+            display: block;
+        }
         
         .file-list {
             list-style: none;
@@ -197,6 +205,52 @@
             border-radius: 8px;
             border: 1px solid #e0e0e0;
         }
+
+        .logs-viewer {
+            background: #111827;
+            color: #e5eefc;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 360px;
+            overflow: auto;
+        }
+
+        .logs-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .logs-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .logs-tab {
+            padding: 8px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 999px;
+            background: #f8fafc;
+            color: #334155;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .logs-tab.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
         
         .loading {
             display: none;
@@ -257,6 +311,18 @@
             <h2 class="card-title">Generated Output Files</h2>
             <ul class="file-list" id="outputFiles"></ul>
         </div>
+
+        <div class="card logs-section" id="logsSection">
+            <h2 class="card-title">Processing Logs</h2>
+            <div class="logs-toolbar">
+                <div class="logs-tabs">
+                    <button class="logs-tab active" id="runLogsTab" onclick="setLogsTab('run')">Current Run Logs</button>
+                    <button class="logs-tab" id="completeLogsTab" onclick="setLogsTab('complete')">Complete Logs</button>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="downloadLogs()">Download Logs</button>
+            </div>
+            <div class="logs-viewer" id="logsViewer">No logs yet.</div>
+        </div>
     </div>
     
     <!-- XML Viewer Modal -->
@@ -273,10 +339,14 @@
 
     <script>
         let selectedLocalFile = null;
+        let currentRunLogs = '';
+        let completeLogs = '';
+        let activeLogsTab = 'run';
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('processBtn').addEventListener('click', processRequest);
+            loadCompleteLogs();
         });
 
         function handleFileSelect(event) {
@@ -319,14 +389,22 @@
             if (data.success) {
                 showStatus(data.message, 'success');
                 displayOutputFiles(data.generatedFiles);
+                currentRunLogs = data.logs || '';
+                displayLogs();
+                loadCompleteLogs();
             } else {
                 showStatus(data.message, 'error');
+                currentRunLogs = data.logs || '';
+                displayLogs();
+                loadCompleteLogs();
             }
         }
 
         function handleProcessError(error) {
             document.getElementById('loading').classList.remove('active');
             showStatus('Error processing: ' + error.message, 'error');
+            currentRunLogs = 'Error processing: ' + error.message;
+            displayLogs();
         }
         
         function displayOutputFiles(files) {
@@ -353,6 +431,41 @@
                 outputFiles.innerHTML = '<li class="file-item"><span class="file-name">No output files generated</span></li>';
                 outputSection.classList.add('active');
             }
+        }
+
+        function displayLogs() {
+            const logsSection = document.getElementById('logsSection');
+            const logsViewer = document.getElementById('logsViewer');
+            const logText = activeLogsTab === 'complete' ? completeLogs : currentRunLogs;
+            logsViewer.textContent = logText && logText.trim().length > 0 ? logText : 'No logs yet.';
+            logsSection.classList.add('active');
+        }
+
+        function setLogsTab(tab) {
+            activeLogsTab = tab;
+            document.getElementById('runLogsTab').classList.toggle('active', tab === 'run');
+            document.getElementById('completeLogsTab').classList.toggle('active', tab === 'complete');
+            displayLogs();
+        }
+
+        function loadCompleteLogs() {
+            fetch('/api/sepa/logs?scope=complete')
+                .then(response => response.json())
+                .then(data => {
+                    completeLogs = data.logs || '';
+                    if (activeLogsTab === 'complete') {
+                        displayLogs();
+                    }
+                })
+                .catch(() => {
+                    if (!completeLogs) {
+                        completeLogs = 'Unable to load complete logs.';
+                    }
+                });
+        }
+
+        function downloadLogs() {
+            window.location.href = '/api/sepa/logs/download?scope=' + encodeURIComponent(activeLogsTab);
         }
         
         function viewFile(filename) {
