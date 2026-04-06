@@ -40,10 +40,12 @@ public class ProcessSepaTransactions {
     private static final Logger logger = LoggerFactory.getLogger(ProcessSepaTransactions.class);
     
     private final SepaUtil sepaUtil;
+    private final SepaFileService sepaFileService;
     
     @Autowired
-    public ProcessSepaTransactions(SepaUtil sepaUtil) {
+    public ProcessSepaTransactions(SepaUtil sepaUtil, SepaFileService sepaFileService) {
         this.sepaUtil = sepaUtil;
+        this.sepaFileService = sepaFileService;
     }
     public static String debtorBan;
     static String debtorAgtBic;
@@ -208,7 +210,7 @@ public class ProcessSepaTransactions {
     private void generateSepaXml(String formattedOutput) {
 
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String fileName = sepaUtil.getOutputFileDir() + File.separator + "STA_" + timestamp + ".xml";
+        String fileName = "STA_" + timestamp + ".xml";
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             dbFactory.setIgnoringElementContentWhitespace(true);
@@ -269,29 +271,29 @@ public class ProcessSepaTransactions {
                             TransformerFactory transformerFactory = TransformerFactory.newInstance();
                             Transformer transformer = transformerFactory.newTransformer();
                             DOMSource source = new DOMSource(doc);
-
-                            // Specify your local file path
-                            StreamResult result = new StreamResult(fileName);
+                            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                            StreamResult result = new StreamResult(outputStream);
                             transformer.transform(source, result);
+                            sepaFileService.saveGeneratedFile(fileName, "application/xml", outputStream.toByteArray());
 
                         }
                     }
                 }
             }
-            logger.info("Successfully wrote to " + fileName + " (overwriting).");
+            logger.info("Successfully generated {}", fileName);
         } catch (IOException e) {
-            logger.error("An error occurred while writing to " + fileName, e);
+            logger.error("An error occurred while generating " + fileName, e);
         } catch (ParserConfigurationException e) {
-            logger.error("An error occurred while writing to " + fileName, e);
+            logger.error("An error occurred while generating " + fileName, e);
             throw new RuntimeException(e);
         } catch (SAXException e) {
-            logger.error("An error occurred while writing to " + fileName, e);
+            logger.error("An error occurred while generating " + fileName, e);
             throw new RuntimeException(e);
         } catch (TransformerConfigurationException e) {
-            logger.error("An error occurred while writing to " + fileName, e);
+            logger.error("An error occurred while generating " + fileName, e);
             throw new RuntimeException(e);
         } catch (TransformerException e) {
-            logger.error("An error occurred while writing to " + fileName, e);
+            logger.error("An error occurred while generating " + fileName, e);
             throw new RuntimeException(e);
         }
     }

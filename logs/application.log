@@ -1,126 +1,134 @@
-2026-04-03 17:39:07 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - Starting SepaGeneratorApplication using Java 19.0.2 with PID 23488 (C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator\target\classes started by Abhiraj in C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator)
-2026-04-03 17:39:07 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - No active profile set, falling back to 1 default profile: "default"
-2026-04-03 17:39:08 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8082 (http)
-2026-04-03 17:39:08 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-04-03 17:39:08 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
-2026-04-03 17:39:08 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-04-03 17:39:08 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1080 ms
-2026-04-03 17:39:08 [main] INFO  com.bfsi.jpmc.util.SepaUtil - SEPA Configuration initialized:
-2026-04-03 17:39:08 [main] INFO  com.bfsi.jpmc.util.SepaUtil - INPUT_DIR:: input
-2026-04-03 17:39:08 [main] INFO  com.bfsi.jpmc.util.SepaUtil - OUTPUT_DIR:: output
-2026-04-03 17:39:08 [main] INFO  com.bfsi.jpmc.util.SepaUtil - xmlROOT:: <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-2026-04-03 17:39:08 [main] INFO  com.bfsi.jpmc.util.SepaUtil - schemeName:: JPMCOID
-2026-04-03 17:39:08 [main] INFO  com.bfsi.jpmc.util.SepaUtil - DEBTOR_CURRENCY:: EUR
-2026-04-03 17:39:08 [main] INFO  com.bfsi.jpmc.util.SepaUtil - JPMC_CLIENT_ID :: 862759
-2026-04-03 17:39:08 [main] INFO  c.bfsi.jpmc.service.SepaFileService - Input directory: C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator\input
-2026-04-03 17:39:08 [main] INFO  c.bfsi.jpmc.service.SepaFileService - Output directory: C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator\output
-2026-04-03 17:39:08 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
-2026-04-03 17:39:09 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8082 (http) with context path ''
-2026-04-03 17:39:09 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - Started SepaGeneratorApplication in 2.149 seconds (process running for 2.519)
-2026-04-03 17:39:29 [http-nio-8082-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-04-03 17:39:29 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-04-03 17:39:29 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2026-04-03 17:39:29 [http-nio-8082-exec-2] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.IllegalArgumentException: Name for argument of type [java.lang.String] not specified, and parameter name information not found in class file either.] with root cause
-java.lang.IllegalArgumentException: Name for argument of type [java.lang.String] not specified, and parameter name information not found in class file either.
-	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.updateNamedValueInfo(AbstractNamedValueMethodArgumentResolver.java:183)
-	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.getNamedValueInfo(AbstractNamedValueMethodArgumentResolver.java:160)
-	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:106)
-	at org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:122)
-	at org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:218)
-	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:171)
-	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829)
-	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
-	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
-	at java.base/java.lang.Thread.run(Thread.java:1589)
-2026-04-03 17:39:32 [http-nio-8082-exec-5] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.IllegalArgumentException: Name for argument of type [java.lang.String] not specified, and parameter name information not found in class file either.] with root cause
-java.lang.IllegalArgumentException: Name for argument of type [java.lang.String] not specified, and parameter name information not found in class file either.
-	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.updateNamedValueInfo(AbstractNamedValueMethodArgumentResolver.java:183)
-	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.getNamedValueInfo(AbstractNamedValueMethodArgumentResolver.java:160)
-	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:106)
-	at org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:122)
-	at org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:218)
-	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:171)
-	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829)
-	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
-	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
-	at java.base/java.lang.Thread.run(Thread.java:1589)
+2026-04-06 16:50:53 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - Starting SepaGeneratorApplication using Java 19.0.2 with PID 6460 (C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator\target\classes started by Abhiraj in C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator)
+2026-04-06 16:50:53 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-06 16:50:54 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8082 (http)
+2026-04-06 16:50:54 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-06 16:50:54 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-06 16:50:54 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-06 16:50:54 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 710 ms
+2026-04-06 16:50:54 [main] INFO  com.bfsi.jpmc.util.SepaUtil - SEPA Configuration initialized:
+2026-04-06 16:50:54 [main] INFO  com.bfsi.jpmc.util.SepaUtil - OUTPUT_DIR:: output
+2026-04-06 16:50:54 [main] INFO  com.bfsi.jpmc.util.SepaUtil - xmlROOT:: <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+2026-04-06 16:50:54 [main] INFO  com.bfsi.jpmc.util.SepaUtil - schemeName:: JPMCOID
+2026-04-06 16:50:54 [main] INFO  com.bfsi.jpmc.util.SepaUtil - DEBTOR_CURRENCY:: EUR
+2026-04-06 16:50:54 [main] INFO  com.bfsi.jpmc.util.SepaUtil - JPMC_CLIENT_ID :: 862759
+2026-04-06 16:50:54 [main] INFO  c.bfsi.jpmc.service.SepaFileService - Output directory: C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator\output
+2026-04-06 16:50:54 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+2026-04-06 16:50:54 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8082 (http) with context path ''
+2026-04-06 16:50:54 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - Started SepaGeneratorApplication in 1.31 seconds (process running for 1.557)
+2026-04-06 16:50:58 [http-nio-8082-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06 16:50:58 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-06 16:50:58 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  c.b.jpmc.controller.SepaController - Received file upload request: ES40 Smartpay Payment Proposal - Value Date 09.10.2025.xlsx
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file created at: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-103561524690506691.xlsx
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  c.b.jpmc.controller.SepaController - File prepared for processing: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-103561524690506691.xlsx
+2026-04-06 16:51:14 [http-nio-8082-exec-2] WARN  c.b.j.s.ProcessPaymentsInputData - Row 3 format EXPANDED_EXCEL missing fields: Debit Account Missing, 
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='FEDEX EXPRESS SPAIN SLU', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[26 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='BE49539007547085', bic='BBVAESMMXXX', name='null', otherId='null'], amount=198.09, currency=EUR, endToEndId='Arise Payment to FEDEX EXPRESS', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='HAYS SEGUROS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[27 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='BE49539007547085', bic='CAIXESBBXXX', name='null', otherId='null'], amount=5999.58, currency=EUR, endToEndId='003/2025/000170', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='RARO NEGOCIOS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[28 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='BE49539007547085', bic='BSCHESMMXXX', name='null', otherId='null'], amount=752.00, currency=EUR, endToEndId='C-2025-07', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Process Debtor Information End
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  com.bfsi.jpmc.util.SepaUtil - msgId :- 86275920260406T1651444173
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  com.bfsi.jpmc.util.SepaUtil - PmtInfoId :- BE495390075470852026040637
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Successfully wrote to output\STA_20260406_165114.xml (overwriting).
+2026-04-06 16:51:14 [http-nio-8082-exec-2] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file deleted: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-103561524690506691.xlsx
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.b.jpmc.controller.SepaController - Received file upload request: CDFF Template - ES40 Smartpay Payment Proposal - Value Date 26.11.2025.xlsx
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file created at: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-392104881188335688.xlsx
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.b.jpmc.controller.SepaController - File prepared for processing: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-392104881188335688.xlsx
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='EASY MAQUINA', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[25 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BSCHESMM', name='null', otherId='null'], amount=48.51, currency=EUR, endToEndId='25VB000805', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='FEDEX EXPRESS SPAIN SLU', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[26 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BBVAESMMXXX', name='null', otherId='null'], amount=198.09, currency=EUR, endToEndId='Arise Payment to FEDEX EXPRESS', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='HAYS SEGUROS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[27 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='CAIXESBBXXX', name='null', otherId='null'], amount=5999.58, currency=EUR, endToEndId='003/2025/000170', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='RARO NEGOCIOS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[28 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BSCHESMMXXX', name='null', otherId='null'], amount=752.00, currency=EUR, endToEndId='C-2025-07', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.b.j.s.ProcessSepaTransactions - Process Debtor Information End
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  com.bfsi.jpmc.util.SepaUtil - msgId :- 86275920260406T1651881921
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  com.bfsi.jpmc.util.SepaUtil - PmtInfoId :- BE495390075470852026040614
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.b.j.s.ProcessSepaTransactions - Successfully wrote to output\STA_20260406_165134.xml (overwriting).
+2026-04-06 16:51:34 [http-nio-8082-exec-3] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file deleted: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-392104881188335688.xlsx
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.b.jpmc.controller.SepaController - Received file upload request: CDFF Template - ES40 Smartpay Payment Proposal - Value Date 26.11.2025.xlsx
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file created at: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-16726487710044279164.xlsx
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.b.jpmc.controller.SepaController - File prepared for processing: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-16726487710044279164.xlsx
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='EASY MAQUINA', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[25 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BSCHESMM', name='null', otherId='null'], amount=48.51, currency=EUR, endToEndId='25VB000805', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='FEDEX EXPRESS SPAIN SLU', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[26 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BBVAESMMXXX', name='null', otherId='null'], amount=198.09, currency=EUR, endToEndId='Arise Payment to FEDEX EXPRESS', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='HAYS SEGUROS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[27 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='CAIXESBBXXX', name='null', otherId='null'], amount=5999.58, currency=EUR, endToEndId='003/2025/000170', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='RARO NEGOCIOS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[28 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BSCHESMMXXX', name='null', otherId='null'], amount=752.00, currency=EUR, endToEndId='C-2025-07', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Process Debtor Information End
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  com.bfsi.jpmc.util.SepaUtil - msgId :- 86275920260406T1651261444
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  com.bfsi.jpmc.util.SepaUtil - PmtInfoId :- BE495390075470852026040629
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Successfully wrote to output\STA_20260406_165145.xml (overwriting).
+2026-04-06 16:51:45 [http-nio-8082-exec-4] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file deleted: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-16726487710044279164.xlsx
+2026-04-06 16:56:44 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - Starting SepaGeneratorApplication using Java 19.0.2 with PID 22356 (C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator\target\classes started by Abhiraj in C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator)
+2026-04-06 16:56:44 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-06 16:56:45 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8082 (http)
+2026-04-06 16:56:45 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-06 16:56:45 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-06 16:56:45 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-06 16:56:45 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 686 ms
+2026-04-06 16:56:45 [main] INFO  c.bfsi.jpmc.service.SepaFileService - Generated files will be stored in memory for UI access only.
+2026-04-06 16:56:45 [main] INFO  com.bfsi.jpmc.util.SepaUtil - SEPA Configuration initialized:
+2026-04-06 16:56:45 [main] INFO  com.bfsi.jpmc.util.SepaUtil - xmlROOT:: <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+2026-04-06 16:56:45 [main] INFO  com.bfsi.jpmc.util.SepaUtil - schemeName:: JPMCOID
+2026-04-06 16:56:45 [main] INFO  com.bfsi.jpmc.util.SepaUtil - DEBTOR_CURRENCY:: EUR
+2026-04-06 16:56:45 [main] INFO  com.bfsi.jpmc.util.SepaUtil - JPMC_CLIENT_ID :: 862759
+2026-04-06 16:56:45 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+2026-04-06 16:56:45 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8082 (http) with context path ''
+2026-04-06 16:56:45 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - Started SepaGeneratorApplication in 1.303 seconds (process running for 1.561)
+2026-04-06 16:56:45 [http-nio-8082-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06 16:56:45 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-06 16:56:45 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  c.b.jpmc.controller.SepaController - Received file upload request: CDFF Template - ES40 Smartpay Payment Proposal - Value Date 26.11.2025.xlsx
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file created at: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-6219574091483342685.xlsx
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  c.b.jpmc.controller.SepaController - File prepared for processing: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-6219574091483342685.xlsx
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='EASY MAQUINA', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[25 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BSCHESMM', name='null', otherId='null'], amount=48.51, currency=EUR, endToEndId='25VB000805', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='FEDEX EXPRESS SPAIN SLU', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[26 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BBVAESMMXXX', name='null', otherId='null'], amount=198.09, currency=EUR, endToEndId='Arise Payment to FEDEX EXPRESS', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='HAYS SEGUROS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[27 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='CAIXESBBXXX', name='null', otherId='null'], amount=5999.58, currency=EUR, endToEndId='003/2025/000170', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='RARO NEGOCIOS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[28 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BSCHESMMXXX', name='null', otherId='null'], amount=752.00, currency=EUR, endToEndId='C-2025-07', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Process Debtor Information End
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  com.bfsi.jpmc.util.SepaUtil - msgId :- 86275920260406T1656825421
+2026-04-06 16:56:53 [http-nio-8082-exec-2] INFO  com.bfsi.jpmc.util.SepaUtil - PmtInfoId :- ES91210004184502000513322026040699
+2026-04-06 16:56:54 [http-nio-8082-exec-2] INFO  c.bfsi.jpmc.service.SepaFileService - Generated file stored in memory: STA_20260406_165653.xml
+2026-04-06 16:56:54 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Successfully generated STA_20260406_165653.xml
+2026-04-06 16:56:54 [http-nio-8082-exec-2] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file deleted: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-6219574091483342685.xlsx
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.b.jpmc.controller.SepaController - Received file upload request: ES40 Smartpay Payment Proposal - Value Date 09.10.2025.xlsx
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file created at: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-7546467372223750051.xlsx
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.b.jpmc.controller.SepaController - File prepared for processing: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-7546467372223750051.xlsx
+2026-04-06 16:57:02 [http-nio-8082-exec-4] WARN  c.b.j.s.ProcessPaymentsInputData - Row 3 format EXPANDED_EXCEL missing fields: Debit Account Missing, 
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.bfsi.jpmc.service.SepaFileService - Generated file stored in memory: ERR_20260406165702.txt
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='FEDEX EXPRESS SPAIN SLU', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[26 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='BE49539007547085', bic='BBVAESMMXXX', name='null', otherId='null'], amount=198.09, currency=EUR, endToEndId='Arise Payment to FEDEX EXPRESS', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='HAYS SEGUROS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[27 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='BE49539007547085', bic='CAIXESBBXXX', name='null', otherId='null'], amount=5999.58, currency=EUR, endToEndId='003/2025/000170', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='RARO NEGOCIOS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[28 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='BE49539007547085', bic='BSCHESMMXXX', name='null', otherId='null'], amount=752.00, currency=EUR, endToEndId='C-2025-07', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Process Debtor Information End
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  com.bfsi.jpmc.util.SepaUtil - msgId :- 86275920260406T1657669180
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  com.bfsi.jpmc.util.SepaUtil - PmtInfoId :- ES91210004184502000513322026040636
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.bfsi.jpmc.service.SepaFileService - Generated file stored in memory: STA_20260406_165702.xml
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.b.j.s.ProcessSepaTransactions - Successfully generated STA_20260406_165702.xml
+2026-04-06 16:57:02 [http-nio-8082-exec-4] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file deleted: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-7546467372223750051.xlsx
+2026-04-06 16:57:46 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - Starting SepaGeneratorApplication using Java 19.0.2 with PID 17484 (C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator\target\classes started by Abhiraj in C:\Users\Abhiraj\Desktop\New folder\SEPAReqGenerator)
+2026-04-06 16:57:46 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-06 16:57:47 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8082 (http)
+2026-04-06 16:57:47 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-06 16:57:47 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-06 16:57:47 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-06 16:57:47 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 703 ms
+2026-04-06 16:57:47 [main] INFO  c.bfsi.jpmc.service.SepaFileService - Generated files will be stored in memory for UI access only.
+2026-04-06 16:57:47 [main] INFO  com.bfsi.jpmc.util.SepaUtil - SEPA Configuration initialized:
+2026-04-06 16:57:47 [main] INFO  com.bfsi.jpmc.util.SepaUtil - xmlROOT:: <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+2026-04-06 16:57:47 [main] INFO  com.bfsi.jpmc.util.SepaUtil - schemeName:: JPMCOID
+2026-04-06 16:57:47 [main] INFO  com.bfsi.jpmc.util.SepaUtil - DEBTOR_CURRENCY:: EUR
+2026-04-06 16:57:47 [main] INFO  com.bfsi.jpmc.util.SepaUtil - JPMC_CLIENT_ID :: 862759
+2026-04-06 16:57:47 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+2026-04-06 16:57:47 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8082 (http) with context path ''
+2026-04-06 16:57:48 [main] INFO  c.bfsi.jpmc.SepaGeneratorApplication - Started SepaGeneratorApplication in 1.359 seconds (process running for 1.608)
+2026-04-06 16:57:48 [http-nio-8082-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06 16:57:48 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-06 16:57:48 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.b.jpmc.controller.SepaController - Received file upload request: CDFF Template - ES40 Smartpay Payment Proposal - Value Date 26.11.2025.xlsx
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file created at: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-13043926493154184648.xlsx
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.b.jpmc.controller.SepaController - File prepared for processing: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-13043926493154184648.xlsx
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='EASY MAQUINA', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[25 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BSCHESMM', name='null', otherId='null'], amount=48.51, currency=EUR, endToEndId='25VB000805', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='FEDEX EXPRESS SPAIN SLU', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[26 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BBVAESMMXXX', name='null', otherId='null'], amount=198.09, currency=EUR, endToEndId='Arise Payment to FEDEX EXPRESS', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='HAYS SEGUROS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[27 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='CAIXESBBXXX', name='null', otherId='null'], amount=5999.58, currency=EUR, endToEndId='003/2025/000170', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Transaction In process :----  SimpleTransaction[party=SimpleParty[name='RARO NEGOCIOS', postalAddress=SimplePostalAddress[type='null', department='null', subDepartment='null', streetName='null', buildingNumber='null', postCode='null', townName='MADRID', countrySubDivision='null', country='ES', addressLines=[28 CALLE ESTEPONA]]], account=SimpleBankAccount[iban='ES9121000418450200051332', bic='BSCHESMMXXX', name='null', otherId='null'], amount=752.00, currency=EUR, endToEndId='C-2025-07', id='null', chargeBearerCode=null, intermediaryAgents=[], remittanceInformationUnstructured=[]]
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Process Debtor Information End
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  com.bfsi.jpmc.util.SepaUtil - msgId :- 86275920260406T1657170813
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  com.bfsi.jpmc.util.SepaUtil - PmtInfoId :- ES91210004184502000513322026040692
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.bfsi.jpmc.service.SepaFileService - Generated file stored in memory: STA_20260406_165755.xml
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.b.j.s.ProcessSepaTransactions - Successfully generated STA_20260406_165755.xml
+2026-04-06 16:57:55 [http-nio-8082-exec-2] INFO  c.bfsi.jpmc.service.SepaFileService - Temporary uploaded file deleted: C:\Users\Abhiraj\AppData\Local\Temp\sepa-upload-13043926493154184648.xlsx

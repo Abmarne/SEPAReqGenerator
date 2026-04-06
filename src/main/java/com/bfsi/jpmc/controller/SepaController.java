@@ -1,5 +1,6 @@
 package com.bfsi.jpmc.controller;
 
+import com.bfsi.jpmc.model.GeneratedFileData;
 import com.bfsi.jpmc.service.ProcessPaymentsInputData;
 import com.bfsi.jpmc.service.SepaFileService;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +42,7 @@ public class SepaController {
         
         try {
             logger.info("Received file upload request: {}", file.getOriginalFilename());
+            sepaFileService.clearGeneratedFiles();
             
             // Validate file type
             String filename = file.getOriginalFilename();
@@ -93,15 +94,11 @@ public class SepaController {
     @GetMapping("/download/{filename}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
         try {
-            Path filePath = sepaFileService.getFilePath(filename);
+            GeneratedFileData fileData = sepaFileService.getGeneratedFile(filename);
             Resource resource = sepaFileService.loadFileAsResource(filename);
-            
-            String contentType = filename.toLowerCase().endsWith(".xml") 
-                ? "application/xml" 
-                : "text/plain";
 
             return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
+                    .contentType(MediaType.parseMediaType(fileData.getContentType()))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
                     .body(resource);
                     

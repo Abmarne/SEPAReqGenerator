@@ -8,6 +8,7 @@ com\bfsi\jpmc\service\CreateErrorRecord.class
 com\bfsi\jpmc\model\ColumnNumMapper$Format.class
 com\bfsi\jpmc\service\SepaFileService.class
 com\bfsi\jpmc\util\AppConstants.class
+com\bfsi\jpmc\model\GeneratedFileData.class
 com\bfsi\jpmc\SepaGeneratorApplication.class
 com\bfsi\jpmc\service\CsvTxtToExcelConverter.class
 com\bfsi\jpmc\model\PainAllFields.class

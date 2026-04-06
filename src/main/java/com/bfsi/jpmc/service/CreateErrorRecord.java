@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -27,10 +27,12 @@ public class CreateErrorRecord {
     static String allErrors = "";
     
     private final SepaUtil sepaUtil;
+    private final SepaFileService sepaFileService;
     
     @Autowired
-    public CreateErrorRecord(SepaUtil sepaUtil) {
+    public CreateErrorRecord(SepaUtil sepaUtil, SepaFileService sepaFileService) {
         this.sepaUtil = sepaUtil;
+        this.sepaFileService = sepaFileService;
     }
 
     public void createErrorFile() {
@@ -38,13 +40,9 @@ public class CreateErrorRecord {
             allErrors = allErrors + System.lineSeparator() + error;
         }
         String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String fileName = sepaUtil.getOutputFileDir() + File.separator + "ERR_" + timestamp + ".txt";
-        try (FileWriter writer = new FileWriter(fileName)) {
-            writer.write(allErrors);
-            logger.debug("Successfully wrote to " + fileName + " (overwriting).");
-        } catch (IOException e) {
-            logger.debug("An error occurred while writing to " + fileName + ": " + e.getMessage());
-        }
+        String fileName = "ERR_" + timestamp + ".txt";
+        sepaFileService.saveGeneratedFile(fileName, "text/plain", allErrors.getBytes(StandardCharsets.UTF_8));
+        logger.debug("Successfully generated {}", fileName);
     }
 
     public static boolean hasErrorRecords() {
@@ -62,7 +60,7 @@ public class CreateErrorRecord {
 
     public void createErrorFileExcel(File file) {
         String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String fileName = sepaUtil.getOutputFileDir() + File.separator + "ERR_" + timestamp + ".xlsx";
+        String fileName = "ERR_" + timestamp + ".xlsx";
         String delimiter = sepaUtil.getDelimiter(file);
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Data");
@@ -86,11 +84,16 @@ public class CreateErrorRecord {
             rowNum = ++rowNum;
         }
 
-        try (FileOutputStream writer = new FileOutputStream(fileName)) {
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
             workbook.write(writer);
-            logger.debug("Successfully wrote to " + fileName + " (overwriting).");
+            sepaFileService.saveGeneratedFile(
+                    fileName,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    writer.toByteArray()
+            );
+            logger.debug("Successfully generated {}", fileName);
         } catch (IOException e) {
-            logger.debug("An error occurred while writing to " + fileName + ": " + e.getMessage());
+            logger.debug("An error occurred while generating " + fileName + ": " + e.getMessage());
         }
     }
 
