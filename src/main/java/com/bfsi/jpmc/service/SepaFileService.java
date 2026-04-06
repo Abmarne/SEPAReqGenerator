@@ -30,7 +30,6 @@ public class SepaFileService {
     private static final Logger logger = LoggerFactory.getLogger(SepaFileService.class);
 
     private final SepaUtil sepaUtil;
-    private Path inputPath;
     private Path outputPath;
 
     @Autowired
@@ -40,13 +39,10 @@ public class SepaFileService {
 
     @PostConstruct
     public void init() {
-        this.inputPath = Paths.get(sepaUtil.getInputFileDir()).toAbsolutePath().normalize();
         this.outputPath = Paths.get(sepaUtil.getOutputFileDir()).toAbsolutePath().normalize();
         
         try {
-            Files.createDirectories(inputPath);
             Files.createDirectories(outputPath);
-            logger.info("Input directory: {}", inputPath);
             logger.info("Output directory: {}", outputPath);
         } catch (IOException e) {
             logger.error("Could not create directories", e);
@@ -54,17 +50,34 @@ public class SepaFileService {
         }
     }
 
-    public File saveUploadedFile(MultipartFile file) throws IOException {
+    public File createTemporaryUploadFile(MultipartFile file) throws IOException {
         String filename = file.getOriginalFilename();
-        if (filename == null) {
-            filename = "uploaded_file.xlsx";
+        String suffix = ".tmp";
+        if (filename != null) {
+            int extensionIndex = filename.lastIndexOf('.');
+            if (extensionIndex >= 0 && extensionIndex < filename.length() - 1) {
+                suffix = filename.substring(extensionIndex);
+            }
         }
-        
-        Path targetLocation = inputPath.resolve(filename);
+
+        Path targetLocation = Files.createTempFile("sepa-upload-", suffix);
         Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
         
-        logger.info("File saved to: {}", targetLocation);
+        logger.info("Temporary uploaded file created at: {}", targetLocation);
         return targetLocation.toFile();
+    }
+
+    public void deleteTemporaryFile(File file) {
+        if (file == null) {
+            return;
+        }
+
+        try {
+            Files.deleteIfExists(file.toPath());
+            logger.info("Temporary uploaded file deleted: {}", file.getAbsolutePath());
+        } catch (IOException e) {
+            logger.warn("Could not delete temporary uploaded file: {}", file.getAbsolutePath(), e);
+        }
     }
 
     public List<String> getGeneratedFiles() {
@@ -123,11 +136,6 @@ public class SepaFileService {
             throw new IOException("File not found: " + filename);
         }
     }
-
-    public Path getInputPath() {
-        return inputPath;
-    }
-
     public Path getOutputPath() {
         return outputPath;
     }

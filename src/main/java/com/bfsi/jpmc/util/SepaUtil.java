@@ -21,9 +21,6 @@ public class SepaUtil {
     public static final String currentDirectory = System.getProperty("user.dir");
     public static final String fileSeparator = File.separator;
 
-    @Value("${sepa.input-dir:input}")
-    private String inputFileDir;
-    
     @Value("${sepa.output-dir:output}")
     private String outputFileDir;
     
@@ -53,7 +50,6 @@ public class SepaUtil {
     @PostConstruct
     public void init() {
         logger.info("SEPA Configuration initialized:");
-        logger.info("INPUT_DIR:: {}", inputFileDir);
         logger.info("OUTPUT_DIR:: {}", outputFileDir);
         logger.info("xmlROOT:: {}", xmlROOT);
         logger.info("schemeName:: {}", schemeName);
@@ -67,10 +63,6 @@ public class SepaUtil {
     }
     
     // Getters for configuration values
-    public String getInputFileDir() {
-        return inputFileDir;
-    }
-    
     public String getOutputFileDir() {
         return outputFileDir;
     }

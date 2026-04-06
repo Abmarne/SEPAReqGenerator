@@ -14,14 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/sepa")
@@ -42,6 +38,7 @@ public class SepaController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, Object>> uploadFile(@RequestParam("file") MultipartFile file) {
         Map<String, Object> response = new HashMap<>();
+        File uploadedFile = null;
         
         try {
             logger.info("Received file upload request: {}", file.getOriginalFilename());
@@ -59,11 +56,11 @@ public class SepaController {
             }
 
             // Save uploaded file
-            File savedFile = sepaFileService.saveUploadedFile(file);
-            logger.info("File saved to: {}", savedFile.getAbsolutePath());
+            uploadedFile = sepaFileService.createTemporaryUploadFile(file);
+            logger.info("File prepared for processing: {}", uploadedFile.getAbsolutePath());
 
             // Process the file
-            processPaymentsInputData.processPaymentInputData(savedFile.getAbsolutePath());
+            processPaymentsInputData.processPaymentInputData(uploadedFile.getAbsolutePath());
 
             // Get generated files
             List<String> generatedFiles = sepaFileService.getGeneratedFiles();
@@ -80,6 +77,8 @@ public class SepaController {
             response.put("success", false);
             response.put("message", "Error processing file: " + e.getMessage());
             return ResponseEntity.internalServerError().body(response);
+        } finally {
+            sepaFileService.deleteTemporaryFile(uploadedFile);
         }
     }
 
@@ -118,94 +117,5 @@ public class SepaController {
         response.put("status", "UP");
         response.put("service", "SEPA Generator");
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/input-files")
-    public ResponseEntity<Map<String, Object>> listInputFiles(
-            @RequestParam(required = false) String type,
-            @RequestParam(required = false) String search) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            Path inputPath = sepaFileService.getInputPath();
-            List<String> files;
-            try (Stream<Path> paths = Files.list(inputPath)) {
-                files = paths
-                        .filter(Files::isRegularFile)
-                        .map(path -> path.getFileName().toString())
-                        .filter(name -> {
-                            String lower = name.toLowerCase();
-                            if (type != null && !type.isEmpty()) {
-                                return lower.endsWith("." + type.toLowerCase());
-                            }
-                            return lower.endsWith(".xlsx") || lower.endsWith(".xls") || 
-                                   lower.endsWith(".csv") || lower.endsWith(".txt");
-                        })
-                        .filter(name -> {
-                            if (search != null && !search.isEmpty()) {
-                                return name.toLowerCase().contains(search.toLowerCase());
-                            }
-                            return true;
-                        })
-                        .sorted()
-                        .collect(Collectors.toList());
-            }
-            response.put("files", files);
-            return ResponseEntity.ok(response);
-        } catch (IOException e) {
-            logger.error("Error listing input files: {}", e.getMessage());
-            response.put("files", List.of());
-            return ResponseEntity.ok(response);
-        }
-    }
-
-    @PostMapping("/process")
-    public ResponseEntity<Map<String, Object>> processFile(@RequestParam("filename") String filename) {
-        Map<String, Object> response = new HashMap<>();
-        
-        try {
-            logger.info("Received process request for file: {}", filename);
-            
-            // Validate file type
-            String lowerFilename = filename != null ? filename.toLowerCase() : "";
-            boolean isValidType = lowerFilename.endsWith(".xlsx") || lowerFilename.endsWith(".xls") ||
-                                  lowerFilename.endsWith(".csv") || lowerFilename.endsWith(".txt");
-            if (!isValidType) {
-                response.put("success", false);
-                response.put("message", "Invalid file type. Only .xlsx, .xls, .csv, and .txt files are allowed.");
-                return ResponseEntity.badRequest().body(response);
-            }
-
-            // Get the file from input directory
-            Path inputPath = sepaFileService.getInputPath().resolve(filename);
-            File file = inputPath.toFile();
-            
-            if (!file.exists()) {
-                response.put("success", false);
-                response.put("message", "File not found in input directory: " + filename);
-                return ResponseEntity.badRequest().body(response);
-            }
-
-            // Capture time before processing
-            Instant processingStart = Instant.now();
-            
-            // Process the file
-            processPaymentsInputData.processPaymentInputData(file.getAbsolutePath());
-
-            // Get files generated during this processing (within last 5 seconds)
-            List<String> generatedFiles = sepaFileService.getRecentlyGeneratedFiles(processingStart.minusSeconds(1));
-            
-            response.put("success", true);
-            response.put("message", "File processed successfully");
-            response.put("inputFile", filename);
-            response.put("generatedFiles", generatedFiles);
-            
-            return ResponseEntity.ok(response);
-            
-        } catch (Exception e) {
-            logger.error("Error processing file: {}", e.getMessage(), e);
-            response.put("success", false);
-            response.put("message", "Error processing file: " + e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
-        }
     }
 }

@@ -61,126 +61,6 @@
             font-weight: 600;
         }
         
-        .filter-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-tab {
-            padding: 8px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 20px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .filter-tab.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        
-        .custom-dropdown {
-            position: relative;
-            width: 100%;
-        }
-        
-        .dropdown-display {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: white;
-            cursor: pointer;
-            user-select: none;
-        }
-        
-        .dropdown-display:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: white;
-            border: 2px solid #667eea;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 20;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .dropdown-menu.active {
-            display: block;
-        }
-        
-        .dropdown-search {
-            padding: 12px;
-            border-bottom: 1px solid #e0e0e0;
-            box-sizing: border-box;
-        }
-        
-        .dropdown-search input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 0.95rem;
-        }
-        
-        .dropdown-search input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .dropdown-items {
-            max-height: 250px;
-            overflow-y: auto;
-        }
-        
-        .dropdown-item {
-            padding: 10px 12px;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .dropdown-item:hover {
-            background: #f0f0f0;
-        }
-        
-        .dropdown-item.no-files {
-            color: #999;
-            cursor: default;
-        }
-        
-        .dropdown-item.no-files:hover {
-            background: white;
-        }
-        
-        .search-box {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-        
-        .search-box:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
         .btn {
             padding: 12px 30px;
             border: none;
@@ -353,47 +233,17 @@
         
         <div class="card">
             <h2 class="card-title">Process Payment File</h2>
-            
-            <div class="filter-tabs" id="sourceTabs">
-                <div class="filter-tab active" id="serverTab" onclick="setSource('server')">Server Files</div>
-                <div class="filter-tab" id="localTab" onclick="setSource('local')">Upload Local File</div>
-            </div>
 
-            <div id="serverSource">
-                <div class="filter-tabs">
-                    <div class="filter-tab active type-filter" onclick="filterFiles('all')">All</div>
-                    <div class="filter-tab type-filter" onclick="filterFiles('excel')">Excel</div>
-                    <div class="filter-tab type-filter" onclick="filterFiles('csv')">CSV</div>
-                    <div class="filter-tab type-filter" onclick="filterFiles('txt')">TXT</div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Select File from Server</label>
-                    <div class="custom-dropdown">
-                        <div class="dropdown-display" id="dropdownDisplay" onclick="toggleFileDropdown()">-- Select a file from input folder --</div>
-                        <div class="dropdown-menu" id="dropdownMenu">
-                            <div class="dropdown-search">
-                                <input type="text" id="dropdownSearchInput" placeholder="Search files..." onkeyup="filterFilesList()">
-                            </div>
-                            <div class="dropdown-items" id="dropdownItems"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="localSource" style="display: none;">
-                <div class="form-group">
-                    <label>Upload File from Desktop</label>
-                    <div style="border: 2px dashed #667eea; padding: 20px; border-radius: 8px; text-align: center; cursor: pointer;" onclick="document.getElementById('fileInput').click()">
-                        <p id="fileNameDisplay">Click to browse or drag & drop</p>
-                        <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">Support for .xlsx, .csv, .txt</p>
-                        <input type="file" id="fileInput" style="display: none;" onchange="handleFileSelect(event)">
-                    </div>
+            <div class="form-group">
+                <label>Select File from Desktop</label>
+                <div style="border: 2px dashed #667eea; padding: 20px; border-radius: 8px; text-align: center; cursor: pointer;" onclick="document.getElementById('fileInput').click()">
+                    <p id="fileNameDisplay">Click to browse and choose a file</p>
+                    <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">Support for .xlsx, .xls, .csv, .txt</p>
+                    <input type="file" id="fileInput" style="display: none;" onchange="handleFileSelect(event)" accept=".xlsx,.xls,.csv,.txt">
                 </div>
             </div>
             
             <button class="btn btn-primary" id="processBtn">Process & Generate SEPA</button>
-            <button class="btn btn-secondary" onclick="refreshFiles()">Refresh</button>
             
             <div id="status" class="status" style="display: none;"></div>
         </div>
@@ -422,25 +272,12 @@
     </div>
 
     <script>
-        let allFiles = [];
-        let currentFilter = 'all';
-        let currentSource = 'server'; // 'server' or 'local'
         let selectedLocalFile = null;
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            loadFiles();
             document.getElementById('processBtn').addEventListener('click', processRequest);
         });
-
-        function setSource(source) {
-            currentSource = source;
-            document.getElementById('serverTab').classList.toggle('active', source === 'server');
-            document.getElementById('localTab').classList.toggle('active', source === 'local');
-            document.getElementById('serverSource').style.display = source === 'server' ? 'block' : 'none';
-            document.getElementById('localSource').style.display = source === 'local' ? 'block' : 'none';
-            document.getElementById('status').style.display = 'none';
-        }
 
         function handleFileSelect(event) {
             const file = event.target.files[0];
@@ -452,124 +289,13 @@
             }
         }
         
-        function filterFiles(type) {
-            currentFilter = type;
-            document.querySelectorAll('.type-filter').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            filterFilesList();
-        }
-        
-        let selectedFile = '';
-        
-        function toggleFileDropdown() {
-            const menu = document.getElementById('dropdownMenu');
-            menu.classList.toggle('active');
-            if (menu.classList.contains('active')) {
-                document.getElementById('dropdownSearchInput').focus();
-                filterFilesList();
-            }
-        }
-        
-        function filterFilesList() {
-            const searchTerm = document.getElementById('dropdownSearchInput').value.toLowerCase();
-            const itemsContainer = document.getElementById('dropdownItems');
-            itemsContainer.innerHTML = '';
-            
-            let filtered = allFiles.filter(file => {
-                const fileLower = file.toLowerCase();
-                const matchesSearch = fileLower.includes(searchTerm);
-                const matchesFilter = currentFilter === 'all' || 
-                    (currentFilter === 'excel' && (fileLower.endsWith('.xlsx') || fileLower.endsWith('.xls'))) ||
-                    (currentFilter === 'csv' && fileLower.endsWith('.csv')) ||
-                    (currentFilter === 'txt' && fileLower.endsWith('.txt'));
-                return matchesSearch && matchesFilter;
-            });
-            
-            if (filtered.length === 0) {
-                const item = document.createElement('div');
-                item.className = 'dropdown-item no-files';
-                item.textContent = 'No files found';
-                itemsContainer.appendChild(item);
-            } else {
-                filtered.forEach(file => {
-                    const item = document.createElement('div');
-                    item.className = 'dropdown-item';
-                    item.textContent = file;
-                    item.onclick = function() {
-                        selectFileItem(file);
-                    };
-                    itemsContainer.appendChild(item);
-                });
-            }
-        }
-        
-        function selectFileItem(file) {
-            selectedFile = file;
-            document.getElementById('dropdownDisplay').textContent = file;
-            document.getElementById('dropdownMenu').classList.remove('active');
-            document.getElementById('dropdownSearchInput').value = '';
-        }
-        
-        function refreshFiles() {
-            loadFiles();
-        }
-        
-        function loadFiles() {
-            fetch('/api/sepa/input-files')
-                .then(response => response.json())
-                .then(data => {
-                    allFiles = data.files || [];
-                })
-                .catch(error => {
-                    showStatus('Error loading files: ' + error.message, 'error');
-                });
-        }
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-            const dropdown = document.querySelector('.custom-dropdown');
-            if (dropdown && !dropdown.contains(e.target)) {
-                if(document.getElementById('dropdownMenu')) {
-                    document.getElementById('dropdownMenu').classList.remove('active');
-                }
-            }
-        });
-        
         function processRequest() {
-            if (currentSource === 'server') {
-                processServerFile();
-            } else {
-                processLocalFile();
-            }
-        }
-
-        function processServerFile() {
-            const filename = selectedFile;
-            if (!filename) {
-                showStatus('Please select a file from server', 'error');
-                return;
-            }
-            
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('outputSection').classList.remove('active');
-            
-            const formData = new FormData();
-            formData.append('filename', filename);
-            
-            fetch('/api/sepa/process', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(handleProcessResponse)
-            .catch(handleProcessError);
+            processLocalFile();
         }
 
         function processLocalFile() {
             if (!selectedLocalFile) {
-                showStatus('Please select a local file from your desktop', 'error');
+                showStatus('Please choose a file from your desktop', 'error');
                 return;
             }
             
@@ -593,10 +319,6 @@
             if (data.success) {
                 showStatus(data.message, 'success');
                 displayOutputFiles(data.generatedFiles);
-                if (currentSource === 'local') {
-                    // Refresh server list because uploaded file is now on server
-                    loadFiles();
-                }
             } else {
                 showStatus(data.message, 'error');
             }
