@@ -1,9 +1,11 @@
 com\bfsi\jpmc\service\ProcessSepaTransactions.class
 com\bfsi\jpmc\validation\InputValidator.class
 com\bfsi\jpmc\controller\SepaController.class
+META-INF\org\apache\logging\log4j\core\config\plugins\Log4j2Plugins.dat
 com\bfsi\jpmc\model\ColumnNumMapper$SepaField.class
 com\bfsi\jpmc\service\ProcessPaymentsInputData.class
 com\bfsi\jpmc\model\ColumnNumMapper.class
+com\bfsi\jpmc\logging\UiLogAppender.class
 com\bfsi\jpmc\service\CreateErrorRecord.class
 com\bfsi\jpmc\service\ProcessingLogService.class
 com\bfsi\jpmc\model\ColumnNumMapper$Format.class

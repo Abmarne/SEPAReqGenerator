@@ -28,17 +28,14 @@ public class CreateErrorRecord {
     
     private final SepaUtil sepaUtil;
     private final SepaFileService sepaFileService;
-    private final ProcessingLogService processingLogService;
     
     @Autowired
     public CreateErrorRecord(
             SepaUtil sepaUtil,
-            SepaFileService sepaFileService,
-            ProcessingLogService processingLogService
+            SepaFileService sepaFileService
     ) {
         this.sepaUtil = sepaUtil;
         this.sepaFileService = sepaFileService;
-        this.processingLogService = processingLogService;
     }
 
     public void createErrorFile() {
@@ -48,8 +45,7 @@ public class CreateErrorRecord {
         String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String fileName = "ERR_" + timestamp + ".txt";
         sepaFileService.saveGeneratedFile(fileName, "text/plain", allErrors.getBytes(StandardCharsets.UTF_8));
-        logger.debug("Successfully generated {}", fileName);
-        processingLogService.warn("Generated error file " + fileName);
+        logger.warn("Generated error file {}", fileName);
     }
 
     public static boolean hasErrorRecords() {
@@ -98,11 +94,9 @@ public class CreateErrorRecord {
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     writer.toByteArray()
             );
-            logger.debug("Successfully generated {}", fileName);
-            processingLogService.warn("Generated error workbook " + fileName);
+            logger.warn("Generated error workbook {}", fileName);
         } catch (IOException e) {
-            logger.debug("An error occurred while generating " + fileName + ": " + e.getMessage());
-            processingLogService.error("Failed to generate error workbook " + fileName + ": " + e.getMessage());
+            logger.error("Failed to generate error workbook {}", fileName, e);
         }
     }
 

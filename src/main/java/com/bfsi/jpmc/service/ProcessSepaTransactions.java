@@ -41,17 +41,14 @@ public class ProcessSepaTransactions {
     
     private final SepaUtil sepaUtil;
     private final SepaFileService sepaFileService;
-    private final ProcessingLogService processingLogService;
     
     @Autowired
     public ProcessSepaTransactions(
             SepaUtil sepaUtil,
-            SepaFileService sepaFileService,
-            ProcessingLogService processingLogService
+            SepaFileService sepaFileService
     ) {
         this.sepaUtil = sepaUtil;
         this.sepaFileService = sepaFileService;
-        this.processingLogService = processingLogService;
     }
     public static String debtorBan;
     static String debtorAgtBic;
@@ -66,7 +63,7 @@ public class ProcessSepaTransactions {
     public static boolean isXmlSuccess = false;
 
     public void processTransactions(LinkedList<PainAllFields> inputTransactionList) {
-        processingLogService.info("Building SEPA transactions for " + inputTransactionList.size() + " record(s).");
+        logger.info("Building SEPA transactions for {} record(s).", inputTransactionList.size());
         List<Transaction> processedTransactions = new LinkedList<>();
         for (PainAllFields txnRecord : inputTransactionList) {
             Transaction transaction = processTransaction(txnRecord);
@@ -207,12 +204,11 @@ public class ProcessSepaTransactions {
             formattedOutput = formattedOutput.replace("<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.001.001.03\">",
                     sepaUtil.getXmlRoot());
             generateSepaXml(formattedOutput);
-            processingLogService.info("SEPA XML structure built successfully.");
+            logger.info("SEPA XML structure built successfully.");
 
 
         } catch (Exception ex) {
             logger.error("Exception ", ex);
-            processingLogService.error("Failed to build final SEPA transaction structure: " + ex.getMessage());
         }
     }
 
@@ -284,7 +280,7 @@ public class ProcessSepaTransactions {
                             StreamResult result = new StreamResult(outputStream);
                             transformer.transform(source, result);
                             sepaFileService.saveGeneratedFile(fileName, "application/xml", outputStream.toByteArray());
-                            processingLogService.info("Generated output file " + fileName);
+                            logger.info("Generated output file {}", fileName);
 
                         }
                     }
@@ -293,22 +289,17 @@ public class ProcessSepaTransactions {
             logger.info("Successfully generated {}", fileName);
         } catch (IOException e) {
             logger.error("An error occurred while generating " + fileName, e);
-            processingLogService.error("I/O error while generating " + fileName + ": " + e.getMessage());
         } catch (ParserConfigurationException e) {
             logger.error("An error occurred while generating " + fileName, e);
-            processingLogService.error("Parser configuration error while generating " + fileName + ": " + e.getMessage());
             throw new RuntimeException(e);
         } catch (SAXException e) {
             logger.error("An error occurred while generating " + fileName, e);
-            processingLogService.error("XML parsing error while generating " + fileName + ": " + e.getMessage());
             throw new RuntimeException(e);
         } catch (TransformerConfigurationException e) {
             logger.error("An error occurred while generating " + fileName, e);
-            processingLogService.error("Transformer configuration error while generating " + fileName + ": " + e.getMessage());
             throw new RuntimeException(e);
         } catch (TransformerException e) {
             logger.error("An error occurred while generating " + fileName, e);
-            processingLogService.error("XML transformation error while generating " + fileName + ": " + e.getMessage());
             throw new RuntimeException(e);
         }
     }

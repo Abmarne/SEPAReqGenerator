@@ -28,17 +28,14 @@ public class ProcessPaymentsInputData {
     private final ProcessSepaTransactions processSepaTransactions;
     private final CreateErrorRecord createErrorRecord;
     private final CsvTxtToExcelConverter csvTxtToExcelConverter;
-    private final ProcessingLogService processingLogService;
 
     @Autowired
     public ProcessPaymentsInputData(ProcessSepaTransactions processSepaTransactions,
                                    CreateErrorRecord createErrorRecord,
-                                   CsvTxtToExcelConverter csvTxtToExcelConverter,
-                                   ProcessingLogService processingLogService) {
+                                   CsvTxtToExcelConverter csvTxtToExcelConverter) {
         this.processSepaTransactions = processSepaTransactions;
         this.createErrorRecord = createErrorRecord;
         this.csvTxtToExcelConverter = csvTxtToExcelConverter;
-        this.processingLogService = processingLogService;
     }
 
     public void processPaymentInputData(String filePath) {
@@ -49,7 +46,7 @@ public class ProcessPaymentsInputData {
     public void processInputFile(File file) {
         // Clear previous error records before processing new file
         CreateErrorRecord.clearErrorRecords();
-        processingLogService.info("Reading input file " + file.getName());
+        logger.info("Reading input file {}", file.getName());
         
         String fileName = file.getName().toLowerCase();
         if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
@@ -58,7 +55,6 @@ public class ProcessPaymentsInputData {
             processTxtCsvFile(file);
         } else {
             logger.error("Unsupported file format: " + fileName + ". Only .xlsx, .xls, .txt, and .csv files are supported.");
-            processingLogService.error("Unsupported file format: " + fileName);
         }
     }
 
@@ -94,37 +90,33 @@ public class ProcessPaymentsInputData {
         }
         if (createErrorRecord.hasErrorRecords()) {
             createErrorRecord.createErrorFile();
-            processingLogService.warn("Validation errors found. Error file generated.");
+            logger.warn("Validation errors found. Error file generated.");
             // createErrorRecord.createErrorFileExcel(file);
         }
         if (!transactionList.isEmpty()) {
-            processingLogService.info("Valid transactions found: " + transactionList.size());
+            logger.info("Valid transactions found: {}", transactionList.size());
             processSepaTransactions.processTransactions(transactionList);
         } else {
-            processingLogService.warn("No valid transactions were found in the Excel file.");
+            logger.warn("No valid transactions were found in the Excel file.");
         }
     }
 
     private void processTxtCsvFile(File file) {
         logger.info("Processing TXT/CSV file: {}", file.getName());
-        processingLogService.info("Processing text or CSV input: " + file.getName());
         
         try {
             // Convert TXT/CSV to Excel workbook format
             Workbook workbook = csvTxtToExcelConverter.convertToWorkbook(file);
             
             logger.info("Successfully converted TXT/CSV to workbook. Processing rows...");
-            processingLogService.info("Converted text or CSV input into workbook format.");
             
             // Process the converted workbook using the same logic as Excel
             processConvertedWorkbook(workbook, file);
             
         } catch (IOException e) {
             logger.error("Error converting TXT/CSV file: {}", e.getMessage(), e);
-            processingLogService.error("Error converting TXT/CSV file: " + e.getMessage());
         } catch (Exception e) {
             logger.error("Error processing TXT/CSV file: {}", e.getMessage(), e);
-            processingLogService.error("Error processing TXT/CSV file: " + e.getMessage());
         }
     }
 
@@ -177,7 +169,7 @@ public class ProcessPaymentsInputData {
         // Create error files if there are errors
         if (createErrorRecord.hasErrorRecords()) {
             createErrorRecord.createErrorFile();
-            processingLogService.warn("Validation errors found. Error file generated.");
+            logger.warn("Validation errors found. Error file generated.");
             // Only create Excel error file for actual Excel files, not converted TXT/CSV
             // because the error record format doesn't match the expected delimiter-based format
             // createErrorRecord.createErrorFileExcel(originalFile);
@@ -185,18 +177,14 @@ public class ProcessPaymentsInputData {
         
         // Process valid transactions
         if (!transactionList.isEmpty()) {
-            processingLogService.info("Valid transactions found: " + transactionList.size());
+            logger.info("Valid transactions found: {}", transactionList.size());
             processSepaTransactions.processTransactions(transactionList);
         } else {
-            processingLogService.warn("No valid transactions were found in the text or CSV file.");
+            logger.warn("No valid transactions were found in the text or CSV file.");
         }
         
         logger.info("TXT/CSV processing complete. Valid transactions: {}, Errors: {}", 
                    transactionList.size(), createErrorRecord.hasErrorRecords() ? "yes" : "no");
-        processingLogService.info(
-                "TXT/CSV processing complete. Valid transactions: " + transactionList.size() +
-                        ", errors present: " + (createErrorRecord.hasErrorRecords() ? "yes" : "no")
-        );
     }
 
     /**
@@ -450,7 +438,6 @@ public class ProcessPaymentsInputData {
             // Log missing fields
             if (missingFields.length() > 0) {
                 logger.warn("Row {} format {} missing fields: {}", row.getRowNum(), format, missingFields);
-                processingLogService.warn("Row " + row.getRowNum() + " missing fields: " + missingFields);
             }
             
             painAllFields.setValidRecord(validDataFlag);
@@ -458,7 +445,6 @@ public class ProcessPaymentsInputData {
             
         } catch (Exception e) {
             logger.error("Error processing record at row " + row.getRowNum(), e);
-            processingLogService.error("Critical processing error at row " + row.getRowNum() + ": " + e.getMessage());
             painAllFields.setValidRecord(false);
             inputValidator(inputValidator, "Critical processing error: " + e.getMessage());
             painAllFields.setInputValidator(inputValidator);

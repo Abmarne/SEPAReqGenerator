@@ -11,12 +11,30 @@ public class ProcessingLogService {
 
     private static final DateTimeFormatter LOG_TIMESTAMP = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter FILE_TIMESTAMP = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+    private static final String RUN_SEPARATOR = "============================================================";
+
+    private static ProcessingLogService instance;
 
     private final StringBuilder currentRunLogBuffer = new StringBuilder();
     private final StringBuilder completeLogBuffer = new StringBuilder();
 
+    public ProcessingLogService() {
+        instance = this;
+    }
+
     public synchronized void clear() {
         currentRunLogBuffer.setLength(0);
+        if (completeLogBuffer.length() > 0) {
+            completeLogBuffer
+                    .append(System.lineSeparator())
+                    .append(RUN_SEPARATOR)
+                    .append(System.lineSeparator())
+                    .append("New file processing started at ")
+                    .append(LocalDateTime.now().format(LOG_TIMESTAMP))
+                    .append(System.lineSeparator())
+                    .append(RUN_SEPARATOR)
+                    .append(System.lineSeparator());
+        }
     }
 
     public synchronized void info(String message) {
@@ -49,6 +67,13 @@ public class ProcessingLogService {
         return prefix + LocalDateTime.now().format(FILE_TIMESTAMP) + ".txt";
     }
 
+    public static void appendFromLogger(String formattedMessage) {
+        ProcessingLogService current = instance;
+        if (current != null) {
+            current.appendFormatted(formattedMessage);
+        }
+    }
+
     private void append(String level, String message) {
         String line = LocalDateTime.now().format(LOG_TIMESTAMP)
                 + " [" + level + "] "
@@ -56,5 +81,14 @@ public class ProcessingLogService {
                 + System.lineSeparator();
         currentRunLogBuffer.append(line);
         completeLogBuffer.append(line);
+    }
+
+    private synchronized void appendFormatted(String formattedMessage) {
+        String normalized = formattedMessage;
+        if (!normalized.endsWith(System.lineSeparator())) {
+            normalized = normalized + System.lineSeparator();
+        }
+        currentRunLogBuffer.append(normalized);
+        completeLogBuffer.append(normalized);
     }
 }

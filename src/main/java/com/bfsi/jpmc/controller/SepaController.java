@@ -52,7 +52,6 @@ public class SepaController {
             logger.info("Received file upload request: {}", file.getOriginalFilename());
             sepaFileService.clearGeneratedFiles();
             processingLogService.clear();
-            processingLogService.info("Started processing request for " + file.getOriginalFilename());
             
             // Validate file type
             String filename = file.getOriginalFilename();
@@ -61,7 +60,7 @@ public class SepaController {
                                   lowerFilename.endsWith(".csv") || lowerFilename.endsWith(".txt");
             
             if (!isValidType) {
-                processingLogService.error("Rejected file because the type is not supported.");
+                logger.error("Rejected file because the type is not supported: {}", filename);
                 response.put("success", false);
                 response.put("message", "Invalid file type. Only .xlsx, .xls, .csv, and .txt files are allowed.");
                 response.put("logs", processingLogService.getLogs());
@@ -71,11 +70,10 @@ public class SepaController {
             // Save uploaded file
             uploadedFile = sepaFileService.createTemporaryUploadFile(file);
             logger.info("File prepared for processing: {}", uploadedFile.getAbsolutePath());
-            processingLogService.info("Uploaded file prepared in temporary storage.");
 
             // Process the file
             processPaymentsInputData.processPaymentInputData(uploadedFile.getAbsolutePath());
-            processingLogService.info("Input processing completed.");
+            logger.info("Input processing completed for {}", filename);
 
             // Get generated files
             List<String> generatedFiles = sepaFileService.getGeneratedFiles();
@@ -90,7 +88,6 @@ public class SepaController {
             
         } catch (Exception e) {
             logger.error("Error processing file: {}", e.getMessage(), e);
-            processingLogService.error("Processing failed: " + e.getMessage());
             response.put("success", false);
             response.put("message", "Error processing file: " + e.getMessage());
             response.put("logs", processingLogService.getLogs());
